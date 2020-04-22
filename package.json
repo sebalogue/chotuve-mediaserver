@@ -1,0 +1,9 @@
+{
+  "name": "chotuve-media-server",
+  "version": "1.0.0",
+  "description": "nodejs chotuve media server",
+  "main": "media_server.js",
+  "dependencies": {
+    "express": "4.x"
+  }
+}
