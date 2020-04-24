@@ -1,5 +1,8 @@
 FROM node:10
 
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -10,4 +13,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD ["node", "media_server.js"]
+CMD [ "npm", "run", "start:prod" ]

@@ -5,5 +5,21 @@
   "main": "media_server.js",
   "dependencies": {
     "express": "4.x"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon media_server.js",
+    "start:prod": "node media_server.js"
+  },
+  "devDependencies": {
+    "jest": "^25.4.0",
+    "supertest": "^4.0.2",
+    "nodemon": "^2.0.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
