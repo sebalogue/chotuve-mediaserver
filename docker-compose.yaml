@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  media-server:
+    container_name: chotuve-media-server
+    build: .
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 8080:8080
+    command: npm start
