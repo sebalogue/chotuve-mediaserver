@@ -15,7 +15,7 @@ install:
 
 script:
   # build docker images
-  - docker build --build-arg NODE_ENV=production --tag media_server_prod
+  - docker build --build-arg NODE_ENV=production --tag media_server_prod .
   - docker tag media_server_prod registry.heroku.com/$HEROKU_APP_NAME/web
 
 deploy:
