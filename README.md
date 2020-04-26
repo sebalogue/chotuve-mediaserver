@@ -12,3 +12,10 @@ Así se crea la imagen ignorando las devDependencies en el `npm install`
 ## Run
 
 `docker run -p 8080:8080 -d media_server_prod`
+
+# Heroku
+### Build and push container
+`heroku container:push web`
+
+### Release
+`heroku container:release web`
