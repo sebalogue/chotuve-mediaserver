@@ -4,7 +4,8 @@
   "description": "nodejs chotuve media server",
   "main": "media_server.js",
   "dependencies": {
-    "express": "4.x"
+    "express": "4.x",
+    "mongoose": "^5.9.10"
   },
   "scripts": {
     "test": "jest",
