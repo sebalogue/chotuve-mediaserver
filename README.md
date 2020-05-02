@@ -19,3 +19,6 @@ Así se crea la imagen ignorando las devDependencies en el `npm install`
 
 ### Release
 `heroku container:release web`
+
+# Run ESLint
+`npx eslint <filename>`
