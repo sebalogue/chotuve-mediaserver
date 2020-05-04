@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://heroku_6z92px8v:tntp2l48id2sbk2rffn715iejf@ds241658.mlab.com:41658/heroku_6z92px8v';
+const { mongodb_uri } = require('../config');
 
 class DbHandler {
   constructor() {
@@ -12,7 +12,7 @@ class DbHandler {
       useUnifiedTopology: true,
     };
 
-    this.uri = MONGODB_URI;
+    this.uri = mongodb_uri;
   }
 
   connect() {

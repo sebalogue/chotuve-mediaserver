@@ -4,15 +4,17 @@ services:
   media-server:
     container_name: chotuve-media-server
     build: .
-    depends_on: 
-      - mongodb
+    depends_on:
+      - mongo
     volumes:
       - .:/app
       - /app/node_modules
     ports:
       - 8080:8080
     command: npm start
-  mongodb:
+    environment:
+      - NODE_ENV=dev
+  mongo:
     image: mongo
     ports:
       - 27017:27017

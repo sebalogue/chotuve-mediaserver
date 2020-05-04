@@ -37,6 +37,17 @@ app.delete('/video', function(req, res) {
 
 });
 
+
+app.get('/dbstatus', function(req, res) {
+  const mongooseDbHandler = new DbHandler();
+  mongooseDbHandler.open(function(err) {
+    res.send("Error al conectar");
+  },
+  function() {
+    res.send((mongoose.connection.readyState).toString())
+  });
+});
+
 app.listen(port, function() {
   console.log(`Example app listening at: http://localhost:${port}`);
 });
