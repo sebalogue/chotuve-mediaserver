@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 
 const videoSchema = new mongoose.Schema({
+  videoId: String,
   url: String,
   name: String,
   size: Number,

@@ -5,12 +5,34 @@ class Videos {
     this.mongooseDbHandler = new DbHandler();
   }
 
-  add(videoId, url) {
+  add(videoId, newUrl) {
     // Buscar video en firebase a partir de url
     // Almacenar metadata en base de datos MongoDB
 
     //hacer funciones con DbHandler.open( {}, {} )
 
+    function whenOpen() {
+      const VideosModel = require('../db/models/video_model');
+
+      var newVideo = new VideosModel({
+        videoId: videoId,
+        url: newUrl,
+        name: 'defaultName',
+        size: 800, // defualt size
+      });
+
+      newVideo.save(function (err) {
+        if (err) console.log(err); // ver errores
+        // saved!
+        console.log('Saved');
+      });
+    };
+
+    function onError(err) {
+      console.log(err); // ver errores
+    };
+
+    this.mongooseDbHandler.open(onError, whenOpen);
   }
 
   getUrl(videoId) {

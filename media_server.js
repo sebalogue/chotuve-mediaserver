@@ -6,6 +6,7 @@ const Videos = require('./services/videos.js');
 const app = express();
 const { port } = require('./config');
 
+app.use(express.json()) // for parsing application/json
 
 app.get('/', function(req, res) {
   res.send('HelloWorld!');
@@ -18,7 +19,11 @@ app.get('/', function(req, res) {
 app.post('/video', function(req, res) {
 
   // Llamar a Videos.add()
-
+  const videos = new Videos();
+  const videoId = req.body['videoId'];
+  const url = req.body['url'];
+  videos.add(videoId, url);
+  res.json(req.body);
 });
 
 // Obtener la url de un video
