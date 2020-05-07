@@ -6,6 +6,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "4.x",
+    "firebase": "^7.14.2",
     "mongoose": "^5.9.10"
   },
   "scripts": {
