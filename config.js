@@ -3,16 +3,16 @@ require('dotenv').config();
 
 const env = process.env.NODE_ENV // 'dev', 'test' or 'prod'
 
-const mongodb_uri_prod = 'mongodb://heroku_6z92px8v:tntp2l48id2sbk2rffn715iejf@ds241658.mlab.com:41658/heroku_6z92px8v';
+const mongodb_uri_prod = '';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDlBeowWP8UPWsvk9kXj9JDaN5_xsuNu4I",
-  authDomain: "chotuve-videos.firebaseapp.com",
-  databaseURL: "https://chotuve-videos.firebaseio.com",
-  projectId: "chotuve-videos",
-  storageBucket: "chotuve-videos.appspot.com",
-  messagingSenderId: "662757364228",
-  appId: "1:662757364228:web:02d934f2819b5d58581b51"
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 };
 
 
