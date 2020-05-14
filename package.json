@@ -4,9 +4,11 @@
   "description": "nodejs chotuve media server",
   "main": "media_server.js",
   "dependencies": {
+    "@google-cloud/storage": "^4.7.0",
     "dotenv": "^8.2.0",
     "express": "4.x",
     "firebase": "^7.14.2",
+    "firebase-admin": "^8.12.1",
     "mongoose": "^5.9.10"
   },
   "scripts": {

@@ -3,7 +3,10 @@
 // must be listed before other Firebase SDKs
 const firebase = require("firebase/app");
 
-const { firebaseConfig } = require('./config');
+const { firebaseConfig } = require('../config');
+const admin = require("firebase-admin");
+const serviceAccount = require("../google-auth/chotuve-videos-d55886f2edb1.json");
+
 
 
 // Add the Firebase products that you want to use
@@ -14,10 +17,14 @@ class FirebaseHandler {
   constructor() {
     // Initialize Firebase
     this.config = firebaseConfig;
-    firebase.initializeApp(this.config);
+    // this.app = firebase.initializeApp(this.config);
+    this.admin = admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        storageBucket: 'gs://chotuve-videos.appspot.com'
+    });
   }
 
-  async getVideoMetadata(url, metadataStore){
+  async getVideoMetadata(url){
     const storage = firebase.storage();
 
     // puede ser https o si no puede ser Google Cloud Storage URI
@@ -39,25 +46,43 @@ class FirebaseHandler {
       const metadata = await storageReference.getMetadata();
       return metadata;
     } catch(error) {
-      console.log("Error");
-      console.log(err);
+      console.error(err);
+      return false;
     }
   }
 
-  async  deleteVideo(url){
-    const storage = firebase.storage();
+  async  deleteVideo(fileName){
+    const bucket = admin.storage().bucket();
+    return await bucket.deleteFiles({prefix: fileName});
+  }
 
-    // puede ser https o si no puede ser Google Cloud Storage URI
-    const storageReference = storage.refFromURL(url);
-
-    // Delete the file
-    // usar await
+  async uploadFile(filename, destinationName) {
+    const bucket = admin.storage().bucket();
+    // Uploads a local file to the bucket
     try {
-      await storageReference.delete();
-      // File deleted successfully
-    } catch (error) {
-      console.log("Error deleting file");
-      console.log(error);
+      await bucket.upload(filename, {
+        // Support for HTTP requests made with `Accept-Encoding: gzip`
+        gzip: true,
+        // By setting the option `destination`, you can change the name of the
+        // object you are uploading to a bucket.
+        destination: destinationName,
+        metadata: {
+          // Enable long-lived HTTP caching headers
+          // Use only if the contents of the file will never change
+          // (If the contents will change, use cacheControl: 'no-cache')
+          cacheControl: 'no-cache',
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+    return true;
+  }
+
+  async closeConnection() {
+    return await this.admin.delete();
   }
 }
-}
+
+module.exports = FirebaseHandler;
