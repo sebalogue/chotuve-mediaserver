@@ -1,6 +1,6 @@
 const { firebaseConfig } = require('../config');
 const admin = require("firebase-admin");
-const serviceAccount = require("../super_secret.txt");
+const serviceAccount = require("../google-auth/super_secret.json");
 const FirebaseFileNotFoundError = require('./errors/firebaseFileNotFoundError');
 
 // Add the Firebase products that you want to use
