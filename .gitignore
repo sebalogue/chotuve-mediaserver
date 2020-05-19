@@ -3,3 +3,4 @@ node_modules/
 .private_vars
 notas.txt
 google-auth/
+super_secret.txt

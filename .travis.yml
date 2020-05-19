@@ -1,35 +1,25 @@
 language: node_js
-
 node_js:
-  - '12.16'
-
+- '12.16'
 services:
-  - docker
-
+- docker
 before_install:
-  - wget -qO- https://toolbelt.heroku.com/install.sh | sh
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
-
+- openssl aes-256-cbc -K $encrypted_355e94ba1091_key -iv $encrypted_355e94ba1091_iv
+  -in super_secret.txt.enc -out super_secret.txt -d
+- wget -qO- https://toolbelt.heroku.com/install.sh | sh
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
 install: npm install
-
 script:
-  # build
-  - NODE_ENV=test docker-compose up --build -d
-  # test
-  - docker exec -it chotuve-media-server npm test
-  # end
-  - docker-compose down
-
+- NODE_ENV=test docker-compose up --build -d
+- docker exec -it chotuve-media-server npm test
+- docker-compose down
 deploy:
   provider: script
-  script:
-    docker push sebalogue/chotuve-mediaserver
-    docker push registry.heroku.com/$HEROKU_APP_NAME/web;
+  script: docker push sebalogue/chotuve-mediaserver docker push registry.heroku.com/$HEROKU_APP_NAME/web;
     heroku container:release web --app $HEROKU_APP_NAME
   on:
     branch: master
-
 env:
   global:
   - secure: V9dbWb/zPpBJSDHZMlpr2iIZGDuC0BVvlvsSSK4MdGja6H2udEB9IsY6Ohtg4FFJiSft6JJcjPTjHU6IQSZcECer7CcMZaOF79krP7s7clGWfkzDYXxW0AATUceTNNqn024blmHNhD5PCdY97DQQP9uXnjcbAgfQWFEPVujSkuFjdcyS+bddV6hCqkzKlhPnWGxzr3kcaKaGvLJtPyruQmYY2wjHCuG09p/VfHsEdO6/DL4d8tBVgyrMbwXlxiQWZpbZDgRgznG1jvm+noIHkO+iHBAO5xa3SeypckQlxD4bLp1w2Z5b6V2yJXWxz2FXBHdJeR0r5j+Ec048M4M5lMht4Ypbv60mi4bKeI38R2oL6hK5tE/53mmpwHGrCenia3kkAaiJ/h2dRfSU/6HLq2EiOaN8gPUapI6liC8FX7z/5cWN6p1Rim+WkFTOe/3CtJMri297M794pnSO1RQ7c9HHqvnkMclaJBdaJmK1d0UFliGt/WP27ZGMz48sp0mm9qJGL8lFUo3LNyT/UDS4u+EU9WCZ9C5UZw4eICx2v7/musmcJhh8YUzCNui9ZvwyPDg5O6/2IT/901i/tXWZJ1RN9AlkLR778OTXhENjp2c14ip+rNXHwaVSHKiU/Z2/V24dEAMPvmsE1iEDuWG31g9cJltcKlmGnnru91a5Npk=

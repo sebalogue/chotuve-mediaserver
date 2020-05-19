@@ -1,6 +1,6 @@
 const { firebaseConfig } = require('../config');
 const admin = require("firebase-admin");
-const serviceAccount = require("../google-auth/chotuve-videos-d55886f2edb1.json");
+const serviceAccount = require("../super_secret.txt");
 const FirebaseFileNotFoundError = require('./errors/firebaseFileNotFoundError');
 
 // Add the Firebase products that you want to use
