@@ -15,9 +15,11 @@ install: npm install
 
 script:
   # build
-  - NODE_ENV=test docker-compose up --build
+  - NODE_ENV=test docker-compose up --build -d
   # test
   - docker exec -it chotuve-media-server npm test
+  # end
+  - docker-compose down
 
 deploy:
   provider: script
