@@ -15,17 +15,15 @@ install: npm install
 
 script:
   # build
-  - docker build --build-arg NODE_ENV=production --tag media_server_prod .
-  - docker tag media_server_prod registry.heroku.com/$HEROKU_APP_NAME/web
-
+  - NODE_ENV=test docker-compose up --build
   # test
-  - docker run --rm -d --env PORT=8080 -p 8080:8080 --name media_server_prod media_server_prod
-  - docker exec -it media_server_prod jest
+  - docker exec -it chotuve-media-server npm test
 
 deploy:
   provider: script
   script:
-    docker push sebalogue/chotuve-mediaserver docker push registry.heroku.com/$HEROKU_APP_NAME/web;
+    docker push sebalogue/chotuve-mediaserver
+    docker push registry.heroku.com/$HEROKU_APP_NAME/web;
     heroku container:release web --app $HEROKU_APP_NAME
   on:
     branch: master

@@ -1,7 +1,3 @@
-// Firebase App (the core Firebase SDK) is always required and
-// must be listed before other Firebase SDKs
-const firebase = require("firebase/app");
-
 const { firebaseConfig } = require('../config');
 const admin = require("firebase-admin");
 const serviceAccount = require("../google-auth/chotuve-videos-d55886f2edb1.json");

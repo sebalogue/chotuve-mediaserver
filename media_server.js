@@ -1,5 +1,5 @@
 const express = require('express');
-const DbHandler = require('./db/db_handler.js')
+const DbHandler = require('./db/dbHandler.js')
 const mongoose = require('mongoose');
 const Videos = require('./services/videos.js');
 

@@ -13,9 +13,14 @@ services:
       - 8080:8080
     command: npm start
     environment:
-      - NODE_ENV=dev
+      - NODE_ENV=${NODE_ENV}
   mongo:
     image: mongo
     ports:
       - 27017:27017
     command: mongod
+  mongo_test:
+    image: mongo
+    ports:
+      - 27018:27018
+    command: mongod --port 27018

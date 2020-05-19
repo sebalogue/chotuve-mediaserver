@@ -10,6 +10,11 @@
 
 `docker-compose up --build`
 
+# Test: Docker-compose
+
+`NODE_ENV=test docker-compose up --build`
+`docker exec -it chotuve-media-server npm test`
+
 # Production: Dockerfile
 
 ## Build

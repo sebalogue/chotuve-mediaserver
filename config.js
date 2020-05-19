@@ -46,7 +46,7 @@ const prod = {
 
 const test = {
   port: process.env.PORT || 8080,
-  mongodbUri: process.env.MONGODB_URI || mongodb_uri_prod,
+  mongodbUri: process.env.MONGODB_URI || 'mongodb://mongo_test:27018',
   firebaseConfig: firebaseConfig,
   dbOptions: dbOptionsAll,
 };
