@@ -1,4 +1,3 @@
-
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
 const firebase = require("firebase/app");
@@ -6,8 +5,7 @@ const firebase = require("firebase/app");
 const { firebaseConfig } = require('../config');
 const admin = require("firebase-admin");
 const serviceAccount = require("../google-auth/chotuve-videos-d55886f2edb1.json");
-
-
+const FirebaseFileNotFoundError = require('./errors/firebaseFileNotFoundError');
 
 // Add the Firebase products that you want to use
 require("firebase/auth");
@@ -17,43 +15,46 @@ class FirebaseHandler {
   constructor() {
     // Initialize Firebase
     this.config = firebaseConfig;
-    // this.app = firebase.initializeApp(this.config);
     this.admin = admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        storageBucket: 'gs://chotuve-videos.appspot.com'
+        storageBucket: 'chotuve-videos.appspot.com',
     });
   }
 
   async getVideoMetadata(url){
-    const storage = firebase.storage();
+    const bucket = admin.storage().bucket();
+    const fileName = this.getFileNameFromUrl(url);
+    const file = bucket.file(fileName);
 
-    // puede ser https o si no puede ser Google Cloud Storage URI
-    const storageReference = storage.refFromURL(url);
-
-    /*
-    // Get metadata properties
-    forestRef.getMetadata().then(function(metadata) {
-      // metadata now contains the metadata for *url*
-      metadataStore['timeCreated'] = metadata['timeCreated'];
-      metadataStore['size'] = metadata['size'];
-    }).catch(function(error) {
-      // Uh-oh, an error occurred!
-    });
-    */
-
-    // Get metadata properties
     try {
-      const metadata = await storageReference.getMetadata();
-      return metadata;
+      const response = await file.getMetadata();
+      if (!response[1]) {
+        throw FirebaseFileNotFoundError;
+      }
+      return response[0];
     } catch(error) {
-      console.error(err);
+      console.error(error);
       return false;
     }
   }
 
-  async  deleteVideo(fileName){
+  async deleteVideo(fileName){
     const bucket = admin.storage().bucket();
-    return await bucket.deleteFiles({prefix: fileName});
+    const file = bucket.file(fileName);
+
+    const fileExists = await file.exists();
+    if (!fileExists[0]) {
+      throw new FirebaseFileNotFoundError;
+    }
+
+    try {
+      const response = await bucket.deleteFiles({prefix: fileName});
+      return true;
+    } catch (error) {
+      if (error.code == 'storage/object-not-found') {
+        throw new FileNotFoundError;
+      }
+    }
   }
 
   async uploadFile(filename, destinationName) {
@@ -74,7 +75,6 @@ class FirebaseHandler {
         },
       });
     } catch (err) {
-      console.error(err);
       return false;
     }
     return true;
@@ -83,6 +83,12 @@ class FirebaseHandler {
   async closeConnection() {
     return await this.admin.delete();
   }
+
+  getFileNameFromUrl(url) {
+    const urlSplit = url.split('.com/')
+    return urlSplit[urlSplit.length - 1];
+  }
+
 }
 
 module.exports = FirebaseHandler;
