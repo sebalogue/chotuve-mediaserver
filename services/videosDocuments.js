@@ -40,13 +40,13 @@ class VideosDocuments {
     let doc;
     try {
       doc = await query.exec();
-      return doc[0].url;
     } catch(error) {
       console.log(error);
     }
-    if (!doc) {
+    if (!doc.length) {
       throw new DbFileNotFoundError;
     }
+    return doc[0].url;
   }
 
   async delete(videoId) {

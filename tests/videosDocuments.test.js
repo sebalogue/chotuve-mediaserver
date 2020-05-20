@@ -132,5 +132,21 @@ test('Deleting video not added does not delete other videos', async () => {
 
     const ret_url = await videos.getUrl(videoId);
     expect(ret_url).toBe(url);
+  });
+
+  test('Get url of video not added throws DbFileNotFoundError', async () => {
+    const videoId = 123;
+    const url = 'url_test.com';
+    const metadata = {
+      name: 'test_name',
+      size: 80
+    }
+    const added = await videos.add(videoId, url, metadata);
+    expect(added).toBe(true);
+
+    const newVideoId = 124
+    expect(async () => {
+      await videos.getUrl(newVideoId);
+    }).rejects.toThrow(DbFileNotFoundError);
   })
 });
