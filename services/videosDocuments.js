@@ -34,28 +34,37 @@ class VideosDocuments {
     }
   }
 
-  getUrl(videoId) {
+  async getUrl(videoId) {
     // Buscar url en base de datos a partir de video id
-    // enviar url (ver si devolver o tener callback)
-
+    const query = VideosModel.find({ videoId: videoId });
+    let doc;
+    try {
+      doc = await query.exec();
+      return doc[0].url;
+    } catch(error) {
+      console.log(error);
+    }
+    if (!doc) {
+      throw new DbFileNotFoundError;
+    }
   }
 
   async delete(videoId) {
+    let exists;
     try {
-      const exists = await this.exists(videoId);
-      if (!exists) {
-        throw new DbFileNotFoundError;
+      exists = await this.exists(videoId);
+      if (exists) {
+        await VideosModel.deleteOne({
+          videoId: videoId,
+        });
       }
-      await VideosModel.deleteOne({
-        videoId: videoId,
-      });
-      return true;
     } catch(error) {
-        if (error instanceof DbFileNotFoundError){
-          throw new DbFileNotFoundError;
-        }
         console.log(error.message);
     }
+    if (!exists) {
+      throw new DbFileNotFoundError;
+    }
+    return true;
   }
 
   async close() {

@@ -4,4 +4,4 @@ node_modules/
 notas.txt
 google-auth/
 super_secret.json
-.vscode/launch.json
+.vscode/

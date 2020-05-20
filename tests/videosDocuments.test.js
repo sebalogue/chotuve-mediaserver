@@ -119,4 +119,18 @@ test('Deleting video not added does not delete other videos', async () => {
     const exists = await videos.exists(videoId);
     expect(exists).toBe(true);
   });
+
+  test('Getting url of video added returns its url', async () => {
+    const videoId = 123;
+    const url = 'url_test.com';
+    const metadata = {
+      name: 'test_name',
+      size: 80
+    }
+    const added = await videos.add(videoId, url, metadata);
+    expect(added).toBe(true);
+
+    const ret_url = await videos.getUrl(videoId);
+    expect(ret_url).toBe(url);
+  })
 });
