@@ -1,4 +1,5 @@
 const VideosDocuments = require('../services/videosDocuments');
+const DbFileNotFoundError = require('../services/errors/dbFileNotFoundError');
 
 describe('VideosDocuemnts', () => {
   jest.setTimeout(30000);
@@ -16,7 +17,7 @@ describe('VideosDocuemnts', () => {
     await videos.close();
   });
 
-test('Adding video document to database returns true', async () => {
+  test('Adding video document to database returns true', async () => {
     const videoId = 123;
     const url = 'url_test.com';
     const metadata = {
@@ -27,7 +28,7 @@ test('Adding video document to database returns true', async () => {
     expect(res).toBe(true);
   });
 
-test('Video exists when added to database', async () => {
+  test('Video exists when added to database', async () => {
     expect.assertions(2);
     const videoId = 123;
     const url = 'url_test.com';
@@ -64,4 +65,58 @@ test('Video exists when added to database', async () => {
     expect(res).toBe(false);
   });
 
+  test('Deleting video added returns true and then .exists() returns false', async () => {
+    expect.assertions(3);
+    const videoId = 123;
+    const url = 'url_test.com';
+    const metadata = {
+      name: 'test_name',
+      size: 80
+    }
+    const added = await videos.add(videoId, url, metadata);
+    expect(added).toBe(true);
+
+    const deleted = await videos.delete(videoId);
+    expect(deleted).toBe(true);
+
+    const exists = await videos.exists(videoId);
+    expect(exists).toBe(false);
+  });
+
+test('Deleting video not added throws DbFileNotFoundError', async () => {
+    //expect.assertions(2);
+    const videoId = 123;
+    const url = 'url_test.com';
+    const metadata = {
+      name: 'test_name',
+      size: 80
+    }
+    const added = await videos.add(videoId, url, metadata);
+    expect(added).toBe(true);
+
+    const newVideoId = 124;
+    expect(async () => {
+      await videos.delete(newVideoId);
+    }).rejects.toThrow(DbFileNotFoundError);
+  });
+
+test('Deleting video not added does not delete other videos', async () => {
+    //expect.assertions(3);
+    const videoId = 123;
+    const url = 'url_test.com';
+    const metadata = {
+      name: 'test_name',
+      size: 80
+    }
+    const added = await videos.add(videoId, url, metadata);
+    expect(added).toBe(true);
+
+    const newVideoId = 124;
+    expect(async () => {
+      await videos.delete(newVideoId);
+    }).rejects.toThrow(DbFileNotFoundError);
+
+    const exists = await videos.exists(videoId);
+    expect(exists).toBe(true);
+  });
 });

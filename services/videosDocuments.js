@@ -1,5 +1,6 @@
 const Database = require('../db/database');
 const VideosModel = require('../db/models/videoModel');
+const DbFileNotFoundError = require('./errors/dbFileNotFoundError');
 
 class VideosDocuments {
   constructor() {
@@ -29,7 +30,7 @@ class VideosDocuments {
       });
       return resp;
     } catch(error) {
-      console.log(err.message);
+      console.log(error.message);
     }
   }
 
@@ -37,16 +38,24 @@ class VideosDocuments {
     // Buscar url en base de datos a partir de video id
     // enviar url (ver si devolver o tener callback)
 
-    //hacer funciones con DbHandler.open( {}, {} )
-
   }
 
-  delete(videoId) {
-    // Borrar video de firebase
-    // Borrar datos en base de datos
-
-    //hacer funciones con DbHandler.open( {}, {} )
-
+  async delete(videoId) {
+    try {
+      const exists = await this.exists(videoId);
+      if (!exists) {
+        throw new DbFileNotFoundError;
+      }
+      await VideosModel.deleteOne({
+        videoId: videoId,
+      });
+      return true;
+    } catch(error) {
+        if (error instanceof DbFileNotFoundError){
+          throw new DbFileNotFoundError;
+        }
+        console.log(error.message);
+    }
   }
 
   async close() {

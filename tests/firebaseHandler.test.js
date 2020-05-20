@@ -36,7 +36,7 @@ describe('FirebaseHandler', () => {
     }).rejects.toThrow(FirebaseFileNotFoundError);
   });
 
-  test('Obtener metadaata de un archivo subido es exitoso', async () => {
+  test('Obtener metadata de un archivo subido es exitoso', async () => {
     expect.assertions(3); // 3?????????????????????
 
     const filename = './tests/files/test_file.txt';
