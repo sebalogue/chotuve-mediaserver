@@ -22,24 +22,35 @@ class Videos {
     return await this.documents.exists(videoId);
   }
 
-  getUrl(videoId) {
-    // Buscar url en base de datos a partir de video id
-    // enviar url (ver si devolver o tener callback)
-
-    //hacer funciones con DbHandler.open( {}, {} )
-
+  async getUrl(videoId) {
+    return await this.documents.getUrl(videoId);
   }
 
-  delete(videoId) {
-    // Borrar video de firebase
-    // Borrar datos en base de datos
-
-    //hacer funciones con DbHandler.open( {}, {} )
-
+  async delete(videoId) {
+    let result;
+    try {
+      const filename = await this.documents.getName(videoId);
+      result = await this.documents.delete(videoId);
+      result = result && this.firebaseHandler.deleteVideo(filename);
+    } catch (error) {
+      if (error instanceof DbFileNotFoundError) {
+        throw new DbFileNotFoundError;
+      }
+      if (error instanceof FirebaseFileNotFoundError) {
+        throw new FirebaseFileNotFoundError;
+      }
+      console.error(error);
+    }
+    return result;
   }
 
-  close() {
-    this.firebaseHandler.closeConnection();
+  async close() {
+    await this.firebaseHandler.closeConnection();
+    await this.documents.close();
+  }
+
+  async _dropDatabase() {
+    await this.documents._dropDatabase();
   }
 }
 

@@ -19,7 +19,7 @@ class VideosDocuments {
       await newVideo.save();
       return true;
     } catch(error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -30,7 +30,7 @@ class VideosDocuments {
       });
       return resp;
     } catch(error) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 
@@ -41,7 +41,7 @@ class VideosDocuments {
     try {
       doc = await query.exec();
     } catch(error) {
-      console.log(error);
+      console.error(error);
     }
     if (!doc.length) {
       throw new DbFileNotFoundError;
@@ -59,12 +59,27 @@ class VideosDocuments {
         });
       }
     } catch(error) {
-        console.log(error.message);
+        console.error(error.message);
     }
     if (!exists) {
       throw new DbFileNotFoundError;
     }
     return true;
+  }
+
+  async getName(videoId) {
+    // Buscar url en base de datos a partir de video id
+    const query = VideosModel.find({ videoId: videoId });
+    let doc;
+    try {
+      doc = await query.exec();
+    } catch(error) {
+      console.error(error);
+    }
+    if (!doc.length) {
+      throw new DbFileNotFoundError;
+    }
+    return doc[0].name;
   }
 
   async close() {
