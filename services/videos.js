@@ -5,9 +5,9 @@ const FirebaseHandler = require('./firebaseHandler');
 // https://juanda.gitbooks.io/tutorial-sobre-acceso-a-bases-de-datos-mongodb-de/mongoose.html
 
 class Videos {
-  constructor() {
+  constructor(firebaseHandler) {
     this.documents = new VideosDocuments();
-    this.firebaseHandler = new FirebaseHandler();
+    this.firebaseHandler = firebaseHandler;
   }
 
   async add(videoId, newUrl) {
@@ -16,6 +16,7 @@ class Videos {
 
     // Almacenar metadata en base de datos MongoDB
     await this.documents.add(videoId, newUrl, metadata);
+    return metadata.timeCreated;
   }
 
   async exists(videoId) {
@@ -42,6 +43,10 @@ class Videos {
       console.error(error);
     }
     return result;
+  }
+
+  async getTimeCreated(videoId) {
+    return await this.documents.getTimeCreated(videoId);
   }
 
   async close() {

@@ -13,6 +13,7 @@ class VideosDocuments {
       url: url,
       name: metadata.name,
       size: metadata.size,
+      timeCreated: metadata.timeCreated
     });
 
     try {
@@ -47,6 +48,21 @@ class VideosDocuments {
       throw new DbFileNotFoundError;
     }
     return doc[0].url;
+  }
+
+  async getTimeCreated(videoID) {
+    // Buscar url en base de datos a partir de video id
+    const query = VideosModel.find({ videoId: videoId });
+    let doc;
+    try {
+      doc = await query.exec();
+    } catch(error) {
+      console.error(error);
+    }
+    if (!doc.length) {
+      throw new DbFileNotFoundError;
+    }
+    return doc[0].timeCreated;
   }
 
   async delete(videoId) {

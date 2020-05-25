@@ -16,13 +16,18 @@ app.get('/', function(req, res) {
 
 // Agregar video a base de datos
 // Deberia llegar url y videoId del video
+// Responde url timestamp y videoId
 app.post('/video', function(req, res) {
   const videos = new Videos();
   const videoId = req.body['videoId'];
   const url = req.body['url'];
   videos.add(videoId, url)
-    .then(() => {
-      res.status(OK_STATUS).json({status: OK_STATUS_STR});
+    .then((timeStamp) => {
+      res.status(OK_STATUS).json({
+        status: OK_STATUS_STR,
+        timeStamp: timeStamp,
+        videoId: videoId
+      });
     })
     .catch((error) => {
       if (error instanceof DbFileNotFoundError) {
@@ -36,14 +41,17 @@ app.post('/video', function(req, res) {
 
 // Obtener la url de un video
 // Deberia llegar el videoId
-app.get('/video', function(req, res) {
+// Responde url, timestamp y videoId
+app.get('/video', async function(req, res) {
   const videos = new Videos();
   const videoId = req.body['videoId'];
+  const timeStamp = await videos.getTimeCreated(videoId);
   videos.getUrl(videoId)
     .then((url) => {
       res.status(OK_STATUS).json({
         status: OK_STATUS_STR,
-        url: url
+        url: url,
+        timeStamp: timeStamp
       });
     })
     .catch((error) => {
