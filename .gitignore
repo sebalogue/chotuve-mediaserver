@@ -1,2 +1,7 @@
 node_modules/
 .env
+.private_vars
+notas.txt
+google-auth/
+super_secret.json
+.vscode/
