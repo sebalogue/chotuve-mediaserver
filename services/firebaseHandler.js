@@ -7,6 +7,8 @@ const FirebaseFileNotFoundError = require('./errors/firebaseFileNotFoundError');
 require("firebase/auth");
 require("firebase/firestore");
 
+const NOT_FOUND = 404;
+
 class FirebaseHandler {
   constructor() {
     // Initialize Firebase
@@ -20,15 +22,18 @@ class FirebaseHandler {
   async getVideoMetadata(url){
     const bucket = admin.storage().bucket();
     const fileName = this.getFileNameFromUrl(url);
-    const file = bucket.file(fileName);
 
     try {
+      const file = bucket.file(fileName);
       const response = await file.getMetadata();
       if (!response[1]) {
-        throw FirebaseFileNotFoundError;
+        throw new FirebaseFileNotFoundError;
       }
       return response[0];
     } catch(error) {
+      if (error.code == 404) {
+        throw new FirebaseFileNotFoundError;
+      }
       console.error(error);
       return false;
     }
@@ -47,7 +52,7 @@ class FirebaseHandler {
       const response = await bucket.deleteFiles({prefix: fileName});
       return true;
     } catch (error) {
-      if (error.code == 'storage/object-not-found') {
+      if (error.code == NOT_FOUND) {
         throw new FileNotFoundError;
       }
     }

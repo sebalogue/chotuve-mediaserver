@@ -5,9 +5,9 @@ const FirebaseHandler = require('./firebaseHandler');
 // https://juanda.gitbooks.io/tutorial-sobre-acceso-a-bases-de-datos-mongodb-de/mongoose.html
 
 class Videos {
-  constructor(firebaseHandler) {
+  constructor() {
     this.documents = new VideosDocuments();
-    this.firebaseHandler = firebaseHandler;
+    this.firebaseHandler = new FirebaseHandler();
   }
 
   async add(videoId, newUrl) {
