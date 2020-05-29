@@ -29,7 +29,7 @@ describe('FirebaseHandler', () => {
     expect(result).toBeTruthy();
   });
 
-  test('Eliminar archivo no existente lanza NotFoundError', () => {
+test('Eliminar archivo no existente lanza NotFoundError', () => {
     const destName = 'not_found_file.txt';
     expect(async () => {
       await firebaseHandler.deleteVideo(destName);
@@ -37,8 +37,6 @@ describe('FirebaseHandler', () => {
   });
 
   test('Obtener metadata de un archivo subido es exitoso', async () => {
-    expect.assertions(3); // 3?????????????????????
-
     const filename = './tests/files/test_file.txt';
     const destName = 'for_tests/test_file.txt';
     const result = await firebaseHandler.uploadFile(filename, destName);

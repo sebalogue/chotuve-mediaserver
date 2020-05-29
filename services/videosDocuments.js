@@ -50,9 +50,9 @@ class VideosDocuments {
     return doc[0].url;
   }
 
-  async getTimeCreated(videoID) {
+  async getTimeCreated(videoId) {
     // Buscar url en base de datos a partir de video id
-    const query = VideosModel.find({ videoId: videoId });
+    const query = VideosModel.find({videoId: videoId });
     let doc;
     try {
       doc = await query.exec();
