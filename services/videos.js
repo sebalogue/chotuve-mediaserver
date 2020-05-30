@@ -1,13 +1,15 @@
 const VideosDocuments = require('./videosDocuments');
 const FirebaseHandler = require('./firebaseHandler');
+const DbFileNotFoundError = require('./errors/dbFileNotFoundError');
+const FirebaseFileNotFoundError = require('./errors/firebaseFileNotFoundError');
 
 // https://blog.revathskumar.com/2015/07/using-promises-with-mongoosejs.html
 // https://juanda.gitbooks.io/tutorial-sobre-acceso-a-bases-de-datos-mongodb-de/mongoose.html
 
 class Videos {
-  constructor(firebaseHandler) {
+  constructor() {
     this.documents = new VideosDocuments();
-    this.firebaseHandler = firebaseHandler;
+    this.firebaseHandler = new FirebaseHandler();
   }
 
   async add(videoId, newUrl) {
@@ -59,4 +61,4 @@ class Videos {
   }
 }
 
-module.exports = Videos;
+module.exports = new Videos();
