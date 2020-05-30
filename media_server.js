@@ -20,6 +20,7 @@ const OK_STATUS_STR = 'OK';
 app.use(express.json()) // for parsing application/json
 
 app.get('/', function(req, res) {
+  console.log("pruebo un print...................");
   res.send('HelloWorld!');
 });
 
@@ -56,7 +57,9 @@ app.post('/video', function(req, res) {
 // Deberia llegar el videoId
 // Responde url, timestamp y videoId
 app.get('/video', async function(req, res) {
+  console.log("en /video...................");
   const videos = Videos;
+  console.log("const videos creado...................");
   const videoId = req.body['videoId'];
   let timeStamp;
   try {
