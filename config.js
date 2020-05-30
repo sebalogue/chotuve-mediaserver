@@ -8,7 +8,7 @@ require('dotenv').config();
 
 const env = process.env.NODE_ENV // 'dev', 'test' or 'prod'
 
-const mongodb_uri_prod = process.env.MONGO_DB_URI;
+const mongodb_uri_prod = process.env.MONGODB_URI;
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
