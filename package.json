@@ -9,6 +9,7 @@
     "express": "4.x",
     "firebase": "^7.14.2",
     "firebase-admin": "^8.12.1",
+    "heroku-logger": "^0.3.3",
     "mongoose": "^5.9.10"
   },
   "scripts": {
