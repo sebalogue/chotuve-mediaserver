@@ -1,6 +1,6 @@
 FROM node:12
 
-ARG NODE_ENV=development
+ARG NODE_ENV=prod
 ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /app
