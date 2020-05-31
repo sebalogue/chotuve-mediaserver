@@ -18,6 +18,8 @@ script:
   - NODE_ENV=test docker-compose up --build -d
   - docker exec -it chotuve-media-server npm test
   - docker-compose down
+  - docker build -t chotuve-media-server .
+  - docker tag chotuve-media-server registry.heroku.com/$HEROKU_APP_NAME/web
 
 deploy:
   provider: script
