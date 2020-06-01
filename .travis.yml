@@ -25,7 +25,7 @@ deploy:
     skip_cleanup: true
     script:
       docker tag chotuve-media-server registry.heroku.com/$HEROKU_APP_STAGING_NAME/web;
-      docker push sebalogue/chotuve-mediaserver;
+      docker push sebalogue/chotuve-mediaserver-staging;
       docker push registry.heroku.com/$HEROKU_APP_STAGING_NAME/web;
       heroku container:release web --app $HEROKU_APP_STAGING_NAME
     on:
