@@ -19,14 +19,27 @@ script:
   - docker exec -it chotuve-media-server npm test
   - docker-compose down
   - docker build -t chotuve-media-server .
-  - docker tag chotuve-media-server registry.heroku.com/$HEROKU_APP_NAME/web
 
 deploy:
-  provider: script
-  script: docker push sebalogue/chotuve-mediaserver; docker push registry.heroku.com/$HEROKU_APP_NAME/web;
-    heroku container:release web --app $HEROKU_APP_NAME
-  on:
-    branch: master
+  - provider: script
+    skip_cleanup: true
+    script:
+      docker tag chotuve-media-server registry.heroku.com/$HEROKU_APP_STAGING_NAME/web;
+      docker push sebalogue/chotuve-mediaserver;
+      docker push registry.heroku.com/$HEROKU_APP_STAGING_NAME/web;
+      heroku container:release web --app $HEROKU_APP_STAGING_NAME
+    on:
+      branch: staging
+
+  - provider: script
+    script:
+      docker tag chotuve-media-server registry.heroku.com/$HEROKU_APP_NAME/web;
+      docker push sebalogue/chotuve-mediaserver;
+      docker push registry.heroku.com/$HEROKU_APP_NAME/web;
+      heroku container:release web --app $HEROKU_APP_NAME
+    on:
+      branch: master
+
 
 env:
   global:

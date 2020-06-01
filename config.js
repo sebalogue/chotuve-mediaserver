@@ -6,9 +6,10 @@ require('dotenv').config();
 // o bien
 // http://BUCKET_NAME.storage.googleapis.com/OBJECT_NAME
 
-const env = process.env.NODE_ENV // 'dev', 'test' or 'prod'
+const env = process.env.NODE_ENV // 'dev', 'test', 'prod' or 'staging'
 
 const mongodb_uri_prod = process.env.MONGODB_URI;
+const mongodb_uri_staging = process.env.MONGODB_STAGING_URI;
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -51,10 +52,18 @@ const test = {
   dbOptions: dbOptionsAll,
 };
 
+const staging = {
+  port: process.env.PORT || 8080,
+  mongodbUri: process.env.MONGODB_URI || mongodb_uri_staging,
+  firebaseConfig: firebaseConfig,
+  dbOptions: dbOptionsAll,
+};
+
 const config = {
   dev,
   test,
-  prod
+  prod,
+  staging
 };
 
 module.exports = config[env];

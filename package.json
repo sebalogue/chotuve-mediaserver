@@ -15,7 +15,8 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon media_server.js",
-    "start:prod": "node media_server.js"
+    "start:prod": "node media_server.js",
+    "start:staging": "node media_server.js"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
