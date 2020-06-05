@@ -14,9 +14,10 @@
     "mongoose": "^5.9.10"
   },
   "scripts": {
-    "test": "jest && codecov",
+    "test": "jest",
     "start": "nodemon media_server.js",
-    "start:prod": "node media_server.js"
+    "start:prod": "node media_server.js",
+    "coverage": "bash <(curl -s https://codecov.io/bash)"
   },
   "devDependencies": {
     "codecov": "^3.7.0",
