@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Videos = require('./services/videos.js');
 const DbFileNotFoundError = require('./services/errors/dbFileNotFoundError');
 const FirebaseFileNotFoundError = require('./services/errors/firebaseFileNotFoundError');
-const logger = require('heroku-logger')
+const { check, validationResult } = require('express-validator');
 
 const app = express();
 const { port } = require('./config');
@@ -19,11 +19,18 @@ const OK_STATUS = 200;
 const OK_STATUS_STR = 'OK';
 
 
-app.use(express.json()) // for parsing application/json
+//app.use(express.json()) // for parsing application/json
+app.use(express.json({
+  verify : (req, res, buf, encoding) => {
+    try {
+      JSON.parse(buf);
+    } catch(e) {
+      res.status(400).send('Invalid JSON');
+    }
+  }
+}));
 
 app.get('/', function(req, res) {
-  console.log("pruebo un print...................");
-  logger.info('Starting server...............');
   res.send('HelloWorld!');
 });
 
@@ -32,7 +39,15 @@ app.get('/', function(req, res) {
 // Agregar video a base de datos
 // Deberia llegar url y videoId del video
 // Responde url timestamp y videoId
-app.post('/video', function(req, res) {
+app.post('/video', [
+  check('videoId').exists(),
+  check('url').exists().isString()
+], function(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const videos = Videos;
   const videoId = req.body['videoId'];
   const url = req.body['url'];
@@ -59,10 +74,14 @@ app.post('/video', function(req, res) {
 // Obtener la url de un video
 // Deberia llegar el videoId
 // Responde url, timestamp y videoId
-app.get('/video', async function(req, res) {
-  logger.info("en /video...................");
+app.get('/video', [
+  check('videoId').exists()
+], async function(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const videos = Videos;
-  logger.info('const videos creado...............');
   const videoId = req.body['videoId'];
   let timeStamp;
   try {
@@ -95,7 +114,13 @@ app.get('/video', async function(req, res) {
 
 // Eliminar un video de la base de datos
 // Deberia llegar el videoId
-app.delete('/video', function(req, res) {
+app.delete('/video',[
+  check('videoId').exists()
+], function(req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const videos = Videos; // crear Videos() una vez (por lo de firebase initialize)
   const videoId = req.body['videoId'];
   videos.delete(videoId)
