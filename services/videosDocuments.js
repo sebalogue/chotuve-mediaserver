@@ -58,6 +58,8 @@ class VideosDocuments {
       doc = await query.exec();
     } catch(error) {
       console.error(error);
+      console.log(error);
+      return;
     }
     if (!doc.length) {
       throw new DbFileNotFoundError;

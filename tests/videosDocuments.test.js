@@ -134,6 +134,21 @@ test('Deleting video not added does not delete other videos', async () => {
     expect(ret_url).toBe(url);
   });
 
+  test('Getting getTimeCreated of video added returns its tiemstamp', async () => {
+    const videoId = 123;
+    const url = 'url_test.com';
+    const metadata = {
+      name: 'test_name',
+      size: 80,
+      timeCreated: new Date('2011-04-11T10:20:30Z')
+    }
+    const added = await videos.add(videoId, url, metadata);
+    expect(added).toBe(true);
+
+    const ret = await videos.getTimeCreated(videoId);
+    expect(ret).toEqual(metadata.timeCreated);
+  });
+
   test('Get url of video not added throws DbFileNotFoundError', async () => {
     const videoId = 123;
     const url = 'url_test.com';
