@@ -101,7 +101,8 @@ app.get('/video', [
       res.status(OK_STATUS).json({
         status: OK_STATUS_STR,
         url: url,
-        timestamp: timeStamp
+        // timestamp: timeStamp
+        timestamp: "0432431"
       });
     })
     .catch((error) => {
