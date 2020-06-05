@@ -22,7 +22,9 @@ class FirebaseHandler {
 
   async getVideoMetadata(url){
     const bucket = admin.storage().bucket();
-    const fileName = this.getFileNameFromUrl(url);
+    //const fileName = this.getFileNameFromUrl(url);
+    const fileName = url;
+
 
     try {
       const file = bucket.file(fileName);

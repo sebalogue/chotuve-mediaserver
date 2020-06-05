@@ -1,5 +1,6 @@
 # Chotuve - Media server
 ![Grupo](https://img.shields.io/badge/grupo-11-blue) [![Build Status](https://travis-ci.com/sebalogue/chotuve-mediaserver.svg?token=pxhQ2W5miJyHZq81NsPq&branch=master)](https://travis-ci.com/github/sebalogue/chotuve-mediaserver)
+[![codecov](https://codecov.io/gh/sebalogue/chotuve-mediaserver/branch/master/graph/badge.svg?token=4ZD8NUHT3C)](https://codecov.io/gh/sebalogue/chotuve-mediaserver)
 [![sv](https://img.shields.io/badge/view-media%20sv-important)](https://github.com/sebalogue/chotuve-mediaserver)
 [![sv](https://img.shields.io/badge/view-auth%20sv-important)](https://github.com/santiagomariani/chotube-auth-server)
 [![sv](https://img.shields.io/badge/view-app%20sv-important)](https://github.com/Franco-Giordano/chotuve-appserver)

@@ -16,7 +16,7 @@ install: npm install
 
 script:
   - NODE_ENV=test docker-compose up --build -d
-  - docker exec -it chotuve-media-server npm test
+  - docker exec -e CODECOV_TOKEN="$CODECOV_TOKEN" -it chotuve-media-server npm test
   - docker-compose down
   - docker build -t chotuve-media-server .
 
