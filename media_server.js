@@ -55,7 +55,8 @@ app.post('/video', [
     .then((timeStamp) => {
       res.status(CREATED_STATUS).json({
         status: CREATED_STATUS_STR,
-        timeStamp: timeStamp,
+        timestamp: timeStamp,
+        url: url,
         videoId: videoId
       });
     })
