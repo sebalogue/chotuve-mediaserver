@@ -14,10 +14,10 @@
     "mongoose": "^5.9.10"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest && codecov",
     "start": "nodemon media_server.js",
     "start:prod": "node media_server.js",
-    "coverage": "bash <(curl -s https://codecov.io/bash)"
+    "coverage": "codecov"
   },
   "devDependencies": {
     "codecov": "^3.7.0",
@@ -32,6 +32,8 @@
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
-    ]
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   }
 }
