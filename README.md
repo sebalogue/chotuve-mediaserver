@@ -7,37 +7,62 @@
 [![sv](https://img.shields.io/badge/view-android-important)](https://github.com/javier2409/Chotuve-Android)
 
 
-# Development: Docker-compose
+# Instrucciones
 
-`docker-compose up --build`
+## Desarrollo local
 
-# Test: Docker-compose
+1. Instalar Docker Engine y Docker Compose
 
-`NODE_ENV=test docker-compose up --build -d`
-`docker exec -it chotuve-media-server npm test`
+2. Asegurarse de tener el archivo 'chotuve-videos-firebase-adminsdk.json' en la raiz con las credenciales de firebase. Despues seguro tengamos una cuenta de firebase para desarrollo y otra para produccion, hay que ver esto bien.
 
-# Production: Dockerfile
+3. Levantar server + database `docker-compose up`
 
-## Build
-`docker build --build-arg NODE_ENV=production --tag media_server_prod .`
+4. Probar la REST API en `http://localhost:8080`
 
-Así se crea la imagen ignorando las devDependencies en el `npm install`
+## API
 
-## Run
+ - **Add video:** `POST http://localhost:8080/video` con body:
+ ```
+{
+  "videoId": "123",
+  "url": "example/url"
+}
+ ```
 
-`docker run -p 8080:8080 -d media_server_prod`
+Respuesta exitosa:
+ ```
+{
+  "videoId": "123",
+  "url": "example/url",
+  "timestamp": "12/12/12"
+}
+ ```
 
-# Heroku
-### Login
-`heroku login`
+ - **Get video:** `GET http://localhost:8080/video` con body:
+ ```
+{
+  "videoId": "123",
+}
+ ```
 
-`heroku container:login`
+ Respuesta exitosa:
+  ```
+{
+  "videoId": "123",
+  "url": "example/url",
+  "timestamp": "12/12/12"
+}
+ ```
 
-### Build and push container
-`heroku container:push web`
+ - **Delete a video:** `DELETE http://localhost:8080/video` con body:
+ ```
+{
+  "videoId": "123",
+}
+ ```
 
-### Release
-`heroku container:release web`
-
-# Run ESLint
-`npx eslint <filename>`
+ Respuesta exitosa:
+```
+"status: "OK
+ ```
+-----

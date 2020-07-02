@@ -1,8 +1,7 @@
 const express = require('express');
-const DbHandler = require('./db/dbHandler.js')
-const mongoose = require('mongoose');
 const VideosController = require('./routes/videosController.js');
 const { check, validationResult } = require('express-validator');
+const Logger = require('./services/logger');
 
 const app = express();
 const { port } = require('./config');
@@ -31,8 +30,10 @@ app.post('/video', [
   check('videoId').exists(),
   check('url').exists().isString()
 ], function(req, res) {
+  Logger.logInfo('POST /video request');
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    Logger.logWarn('POST /video: invalid Format');
     return res.status(400).json({ errors: errors.array() });
   }
   const videoId = req.body['videoId'];
@@ -47,8 +48,10 @@ app.post('/video', [
 app.get('/video', [
   check('videoId').exists()
 ], async function(req, res) {
+  Logger.logInfo('GET /video request');
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    Logger.logWarn('GET /video: invalid Format');
     return res.status(400).json({ errors: errors.array() });
   }
   const videoId = req.body['videoId'];
@@ -61,8 +64,10 @@ app.get('/video', [
 app.delete('/video',[
   check('videoId').exists()
 ], function(req, res) {
+  Logger.logInfo('DELETE /video request');
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    Logger.logWarn('DELETE /video: invalid Format');
     return res.status(400).json({ errors: errors.array() });
   }
   const videoId = req.body['videoId'];
@@ -72,18 +77,7 @@ app.delete('/video',[
 
 // ----------------------------------------
 
-
-app.get('/dbstatus', function(req, res) {
-  const mongooseDbHandler = new DbHandler();
-  mongooseDbHandler.open(function(err) {
-    res.send("Error al conectar");
-  },
-  function() {
-    res.send((mongoose.connection.readyState).toString())
-  });
-});
-
 app.listen(port, function() {
-  console.log(`Example app listening at: http://localhost:${port}`);
+  Logger.logInfo(`Example app listening at: http://localhost:${port}`);
 });
 

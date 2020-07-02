@@ -1,6 +1,7 @@
 const Videos = require('../services/videos.js');
 const DbFileNotFoundError = require('../services/errors/dbFileNotFoundError');
 const FirebaseFileNotFoundError = require('../services/errors/firebaseFileNotFoundError');
+const Logger = require('../services/logger');
 
 const NOT_FOUND_STATUS = 404;
 const NOT_FOUND_IN_DB = 'File not found in Database';
@@ -13,15 +14,16 @@ const OK_STATUS = 200;
 const OK_STATUS_STR = 'OK';
 
 class VideosController {
-
-  catchError(error, res) {
+  static catchError(error, res) {
     if (error instanceof DbFileNotFoundError) {
-      res.status(NOT_FOUND_STATUS).json({status: NOT_FOUND_IN_DB});
-    }
-    else if (error instanceof FirebaseFileNotFoundError){
-      res.status(NOT_FOUND_STATUS).json({status: NOT_FOUND_IN_FIREBASE});
+      Logger.logInfo(NOT_FOUND_IN_DB);
+      res.status(NOT_FOUND_STATUS).json({ status: NOT_FOUND_IN_DB });
+    } else if (error instanceof FirebaseFileNotFoundError) {
+      Logger.logInfo(NOT_FOUND_IN_FIREBASE);
+      res.status(NOT_FOUND_STATUS).json({ status: NOT_FOUND_IN_FIREBASE });
     } else {
-      res.status(UNKNOWN_ERROR).json({status: UNKNOWN_ERROR_STR});
+      Logger.logError('Unknown internal api error');
+      res.status(UNKNOWN_ERROR).json({ status: UNKNOWN_ERROR_STR });
     }
   }
 
@@ -32,9 +34,10 @@ class VideosController {
         res.status(CREATED_STATUS).json({
           status: CREATED_STATUS_STR,
           timestamp: timeStamp,
-          url: url,
-          videoId: videoId
+          url,
+          videoId,
         });
+        Logger.logInfo('Video added successfully');
       })
       .catch((error) => {
         this.catchError(error, res);
@@ -54,9 +57,10 @@ class VideosController {
       .then((url) => {
         res.status(OK_STATUS).json({
           status: OK_STATUS_STR,
-          url: url,
-          timestamp: timeStamp
+          url,
+          timestamp: timeStamp,
         });
+        Logger.logInfo('Video getted successfully');
       })
       .catch((error) => {
         this.catchError(error, res);
@@ -67,7 +71,8 @@ class VideosController {
     const videos = Videos; // crear Videos() una vez (por lo de firebase initialize)
     videos.delete(videoId)
       .then(() => {
-        res.status(OK_STATUS).json({status: OK_STATUS_STR});
+        res.status(OK_STATUS).json({ status: OK_STATUS_STR });
+        Logger.logInfo('Video deleted successfully');
       })
       .catch((error) => {
         this.catchError(error, res);
@@ -75,4 +80,4 @@ class VideosController {
   }
 }
 
-module.exports = VideosController
+module.exports = VideosController;

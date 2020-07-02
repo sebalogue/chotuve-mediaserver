@@ -1,5 +1,5 @@
 
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const videoSchema = new mongoose.Schema({
   videoId: String,

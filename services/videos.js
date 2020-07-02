@@ -38,10 +38,10 @@ class Videos {
       result = result && this.firebaseHandler.deleteVideo(filename);
     } catch (error) {
       if (error instanceof DbFileNotFoundError) {
-        throw new DbFileNotFoundError;
+        throw new DbFileNotFoundError();
       }
       if (error instanceof FirebaseFileNotFoundError) {
-        throw new FirebaseFileNotFoundError;
+        throw new FirebaseFileNotFoundError();
       }
       console.error(error);
     }
