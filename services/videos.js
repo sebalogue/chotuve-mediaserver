@@ -2,12 +2,13 @@ const VideosDocuments = require('./videosDocuments');
 const FirebaseHandler = require('./firebaseHandler');
 const DbFileNotFoundError = require('./errors/dbFileNotFoundError');
 const FirebaseFileNotFoundError = require('./errors/firebaseFileNotFoundError');
+const FirebaseHandlerMock = require('../tests/firebaseHandlerMock');
 
 // https://blog.revathskumar.com/2015/07/using-promises-with-mongoosejs.html
 // https://juanda.gitbooks.io/tutorial-sobre-acceso-a-bases-de-datos-mongodb-de/mongoose.html
 
 class Videos {
-  constructor() {
+  constructor(firebaseHandler = true) {
     this.documents = new VideosDocuments();
     this.firebaseHandler = new FirebaseHandler();
   }

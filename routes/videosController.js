@@ -12,6 +12,7 @@ const CREATED_STATUS = 201;
 const CREATED_STATUS_STR = 'Video added';
 const OK_STATUS = 200;
 const OK_STATUS_STR = 'OK';
+const DB_ERROR = 'Internal Database Error';
 
 class VideosController {
   static catchError(error, res) {
@@ -21,6 +22,9 @@ class VideosController {
     } else if (error instanceof FirebaseFileNotFoundError) {
       Logger.logInfo(NOT_FOUND_IN_FIREBASE);
       res.status(NOT_FOUND_STATUS).json({ status: NOT_FOUND_IN_FIREBASE });
+    } else if (error instanceof DbError) {
+      Logger.logInfo(DB_ERROR);
+      res.status(UNKNOWN_ERROR).json({ status: error.message });
     } else {
       Logger.logError('Unknown internal api error');
       res.status(UNKNOWN_ERROR).json({ status: UNKNOWN_ERROR_STR });

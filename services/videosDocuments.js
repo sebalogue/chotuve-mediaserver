@@ -2,6 +2,7 @@ const Database = require('../db/database');
 const VideosModel = require('../db/models/videoModel');
 const DbFileNotFoundError = require('./errors/dbFileNotFoundError');
 const Logger = require('./logger');
+const DbError = require('./errors/dbError');
 
 
 class VideosDocuments {
@@ -24,19 +25,22 @@ class VideosDocuments {
       return true;
     } catch (error) {
       Logger.logError(error);
+      throw new DbError(error.prototype.name);
     }
   }
 
   async update(videoId, url) {
     try {
       const video = await (await VideosModel.findOne({ videoId: videoId }));
+      if (!video) {
+        throw new DbFileNotFoundError();
+      };
       video.url = url;
       await video.save();
       Logger.logInfo('Successful database request: update');
       return video.url
     } catch (error) {
-      Logger.logError(error);
-      return false; // tirar error
+      throw new DbFileNotFoundError();
     }
   }
 
@@ -49,6 +53,7 @@ class VideosDocuments {
       return resp;
     } catch (error) {
       Logger.logError(error);
+      throw new DbError(error.prototype.name);
     }
   }
 
