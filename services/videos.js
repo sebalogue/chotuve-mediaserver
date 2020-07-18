@@ -21,6 +21,11 @@ class Videos {
     return metadata.timeCreated;
   }
 
+  async update(videoId, newUrl) {
+    // Almacenar metadata en base de datos MongoDB
+    return this.documents.update(videoId, newUrl);
+  }
+
   async exists(videoId) {
     return await this.documents.exists(videoId);
   }

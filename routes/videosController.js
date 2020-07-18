@@ -78,6 +78,22 @@ class VideosController {
         this.catchError(error, res);
       });
   }
+
+  putVideo(videoId, url, res) {
+    const videos = Videos;
+    videos.update(videoId, url)
+      .then((url) => {
+        res.status(OK_STATUS).json({
+          status: OK_STATUS_STR,
+          url,
+          videoId,
+        });
+        Logger.logInfo('Video updated successfully');
+      })
+      .catch((error) => {
+        this.catchError(error, res);
+      });
+  }
 }
 
 module.exports = VideosController;

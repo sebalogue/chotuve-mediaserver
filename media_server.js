@@ -75,6 +75,24 @@ app.delete('/video',[
   videosController.getVideo(videoId, res);
 });
 
+
+// Actualizar url de un video
+app.put('/video', [
+  check('videoId').exists(),
+  check('url').exists().isString()
+]), function(req, res) {
+  Logger.logInfo('PUT /video request');
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    Logger.logWarn('PUT /video: invalid Format');
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const videoId = req.body['videoId'];
+  const url = req.body['url'];
+  const videosController = new VideosController();
+  videosController.putVideo(videoId, url, res);
+}
+
 // ----------------------------------------
 
 app.listen(port, function() {

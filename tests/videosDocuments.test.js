@@ -164,4 +164,23 @@ test('Deleting video not added does not delete other videos', async () => {
       await videos.getUrl(newVideoId);
     }).rejects.toThrow(DbFileNotFoundError);
   })
+
+  test('Video updated successfully when added to database', async () => {
+    expect.assertions(3);
+    const videoId = 123;
+    const url = 'url_test.com';
+    const metadata = {
+      name: 'test_name',
+      size: 80
+    }
+    const added = await videos.add(videoId, url, metadata);
+    expect(added).toBe(true);
+
+    const exists = await videos.exists(videoId);
+    expect(exists).toBe(true);
+
+    const new_url = 'url_test_new.com'
+    const updated_url = await videos.update(videoId, new_url);
+    expect(updated_url).toEqual(new_url);
+  });
 });

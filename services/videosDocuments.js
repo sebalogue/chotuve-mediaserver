@@ -23,7 +23,20 @@ class VideosDocuments {
       Logger.logInfo('Successful database request: add');
       return true;
     } catch (error) {
-      Logger.logERror(error);
+      Logger.logError(error);
+    }
+  }
+
+  async update(videoId, url) {
+    try {
+      const video = await (await VideosModel.findOne({ videoId: videoId }));
+      video.url = url;
+      await video.save();
+      Logger.logInfo('Successful database request: update');
+      return video.url
+    } catch (error) {
+      Logger.logError(error);
+      return false; // tirar error
     }
   }
 
