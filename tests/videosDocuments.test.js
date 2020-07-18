@@ -167,7 +167,6 @@ test('Deleting video not added does not delete other videos', async () => {
   })
 
   test('Video updated successfully when added to database', async () => {
-    expect.assertions(3);
     const videoId = 123;
     const url = 'url_test.com';
     const metadata = {
