@@ -1,4 +1,5 @@
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const Logger = require('../services/logger');
 const { mongodbUri, dbOptions } = require('../config');
 
 class Database {
@@ -7,22 +8,26 @@ class Database {
     this.options = dbOptions;
 
     mongoose.connect(this.uri, this.options).catch((err) => {
-      console.error.bind(console, err);
+      Logger.logError(err);
     });
 
     this.db = mongoose.connection;
-    this.db.on('error', console.error.bind(console, 'Database connection Error : '));
-    this.db.once('open', function(){
-      // console.log('Database connection ok!');
+    this.db.on('error', (err) => {
+      Logger.logError(err);
+    });
+    this.db.once('open', () => {
+      Logger.logInfo('Databese connection: successful');
     });
   }
 
   async close() {
     await this.db.close();
+    Logger.logInfo('Database connection closed');
   }
 
   async drop() {
     await this.db.dropDatabase();
+    Logger.logInfo('Database dropped');
   }
 }
 

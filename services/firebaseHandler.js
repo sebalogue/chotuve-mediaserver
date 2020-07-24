@@ -1,12 +1,13 @@
+const admin = require('firebase-admin');
 const { firebaseConfig } = require('../config');
-const admin = require("firebase-admin");
-const serviceAccount = require("../super_secret.json");
+const serviceAccount = require('../super_secret.json');
 const FirebaseFileNotFoundError = require('./errors/firebaseFileNotFoundError');
 const UnhandledFirebaseError = require('./errors/unhandledFirebaseError');
+const Logger = require('./logger');
 
 // Add the Firebase products that you want to use
-require("firebase/auth");
-require("firebase/firestore");
+require('firebase/auth');
+require('firebase/firestore');
 
 const NOT_FOUND = 404;
 
@@ -15,46 +16,50 @@ class FirebaseHandler {
     // Initialize Firebase
     this.config = firebaseConfig;
     this.admin = admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        storageBucket: 'chotuve-videos.appspot.com',
+      credential: admin.credential.cert(serviceAccount),
+      storageBucket: 'chotuve-videos.appspot.com',
     });
+    Logger.logInfo('Firebase App initialized');
   }
 
-  async getVideoMetadata(url){
+  async getVideoMetadata(url) {
     const bucket = admin.storage().bucket();
-    const fileName = this.getFileNameFromUrl(url);
+    const fileName = url;
 
+    let response;
     try {
       const file = bucket.file(fileName);
-      const response = await file.getMetadata();
+      response = await file.getMetadata();
       if (!response[1]) {
-        throw new FirebaseFileNotFoundError;
+        throw new FirebaseFileNotFoundError();
       }
-      return response[0];
-    } catch(error) {
-      if (error.code == 404) {
-        throw new FirebaseFileNotFoundError;
+      Logger.logInfo('Firebase video metadata obtained');
+    } catch (error) {
+      if (error.code === 404) {
+        throw new FirebaseFileNotFoundError();
       }
-      console.log(error);
       throw new UnhandledFirebaseError(error.code);
     }
+    return response[0];
   }
 
-  async deleteVideo(fileName){
+  async deleteVideo(fileName) {
     try {
       const bucket = admin.storage().bucket();
       const file = bucket.file(fileName);
       const fileExists = await file.exists();
       if (!fileExists[0]) {
-        throw new FirebaseFileNotFoundError;
+        throw new FirebaseFileNotFoundError();
       }
-      await bucket.deleteFiles({prefix: fileName});
-      return true;
+      await bucket.deleteFiles({ prefix: fileName });
+      Logger.logInfo('Firebase video deleted');
     } catch (error) {
       if (error.code == NOT_FOUND || error instanceof FirebaseFileNotFoundError) {
-        throw new FirebaseFileNotFoundError;
+        throw new FirebaseFileNotFoundError();
       }
+      return false; // ver
     }
+    return true;
   }
 
   async uploadFile(filename, destinationName) {
@@ -81,14 +86,15 @@ class FirebaseHandler {
   }
 
   async closeConnection() {
-    return await this.admin.delete();
+    const p = await this.admin.delete();
+    Logger.logInfo('Firebase connection closed');
+    return p;
   }
 
   getFileNameFromUrl(url) {
-    const urlSplit = url.split('.com/')
+    const urlSplit = url.split('.com/');
     return urlSplit[urlSplit.length - 1];
   }
-
 }
 
 module.exports = FirebaseHandler;
