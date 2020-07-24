@@ -1,8 +1,6 @@
 // config.js
 require('dotenv').config();
 
-const env = process.env.NODE_ENV; // 'dev', 'test' or 'prod'
-
 const mongodbUriProd = process.env.MONGODB_URI;
 const env = process.env.NODE_ENV // 'dev', 'test', 'prod' or 'staging'
 
