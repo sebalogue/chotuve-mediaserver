@@ -41,8 +41,6 @@ test('Eliminar archivo no existente lanza NotFoundError', () => {
     const destName = 'for_tests/test_file.txt';
     const result = await firebaseHandler.uploadFile(filename, destName);
     expect(result).toBeTruthy();
-
-    //const url = 'url_test.com/for_tests/test_file.txt';
     const url = 'for_tests/test_file.txt';
     const metadata = await firebaseHandler.getVideoMetadata(url);
 

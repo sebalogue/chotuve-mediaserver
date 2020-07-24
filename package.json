@@ -17,6 +17,7 @@
     "test": "jest && codecov",
     "start": "nodemon media_server.js",
     "start:prod": "node media_server.js",
+    "coverage": "codecov",
     "start:staging": "node media_server.js"
   },
   "devDependencies": {
@@ -32,6 +33,8 @@
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
-    ]
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   }
 }

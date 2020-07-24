@@ -2,12 +2,13 @@ const VideosDocuments = require('./videosDocuments');
 const FirebaseHandler = require('./firebaseHandler');
 const DbFileNotFoundError = require('./errors/dbFileNotFoundError');
 const FirebaseFileNotFoundError = require('./errors/firebaseFileNotFoundError');
+const FirebaseHandlerMock = require('../tests/firebaseHandlerMock');
 
 // https://blog.revathskumar.com/2015/07/using-promises-with-mongoosejs.html
 // https://juanda.gitbooks.io/tutorial-sobre-acceso-a-bases-de-datos-mongodb-de/mongoose.html
 
 class Videos {
-  constructor() {
+  constructor(firebaseHandler = true) {
     this.documents = new VideosDocuments();
     this.firebaseHandler = new FirebaseHandler();
   }
@@ -19,6 +20,11 @@ class Videos {
     // Almacenar metadata en base de datos MongoDB
     await this.documents.add(videoId, newUrl, metadata);
     return metadata.timeCreated;
+  }
+
+  async update(videoId, newUrl) {
+    // Almacenar metadata en base de datos MongoDB
+    return this.documents.update(videoId, newUrl);
   }
 
   async exists(videoId) {
@@ -38,10 +44,10 @@ class Videos {
       result = result && this.firebaseHandler.deleteVideo(filename);
     } catch (error) {
       if (error instanceof DbFileNotFoundError) {
-        throw new DbFileNotFoundError;
+        throw new DbFileNotFoundError();
       }
       if (error instanceof FirebaseFileNotFoundError) {
-        throw new FirebaseFileNotFoundError;
+        throw new FirebaseFileNotFoundError();
       }
       console.error(error);
     }

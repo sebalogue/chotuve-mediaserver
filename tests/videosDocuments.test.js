@@ -1,5 +1,6 @@
 const VideosDocuments = require('../services/videosDocuments');
 const DbFileNotFoundError = require('../services/errors/dbFileNotFoundError');
+const DbError = require('../services/errors/dbError');
 
 describe('VideosDocuemnts', () => {
   jest.setTimeout(30000);
@@ -164,4 +165,36 @@ test('Deleting video not added does not delete other videos', async () => {
       await videos.getUrl(newVideoId);
     }).rejects.toThrow(DbFileNotFoundError);
   })
+
+  test('Video updated successfully when added to database', async () => {
+    const videoId = 123;
+    const url = 'url_test.com';
+    const metadata = {
+      name: 'test_name',
+      size: 80
+    }
+    const added = await videos.add(videoId, url, metadata);
+    expect(added).toBe(true);
+
+    const exists = await videos.exists(videoId);
+    expect(exists).toBe(true);
+
+    const newUrl = 'url_test_new.com'
+    const updatedUrl = await videos.update(videoId, newUrl);
+    expect(updatedUrl).toEqual(newUrl);
+  });
+
+  test('Video update throws error when not added to database', async () => {
+    const videoId = 123;
+    const url = 'url_test.com';
+    const metadata = {
+      name: 'test_name',
+      size: 80
+    }
+
+    const newUrl = 'url_test_new.com'
+    expect(async () => {
+      await videos.update(videoId, newUrl);
+    }).rejects.toThrow(DbFileNotFoundError);
+  });
 });
