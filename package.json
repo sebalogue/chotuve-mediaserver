@@ -18,6 +18,7 @@
     "start": "nodemon media_server.js",
     "start:prod": "node media_server.js",
     "coverage": "codecov"
+    "start:staging": "node media_server.js"
   },
   "devDependencies": {
     "codecov": "^3.7.0",
