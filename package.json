@@ -17,7 +17,7 @@
     "test": "jest && codecov",
     "start": "nodemon media_server.js",
     "start:prod": "node media_server.js",
-    "coverage": "codecov"
+    "coverage": "codecov",
     "start:staging": "node media_server.js"
   },
   "devDependencies": {
