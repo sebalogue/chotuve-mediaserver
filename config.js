@@ -17,7 +17,6 @@ const firebaseConfig = {
   appId: process.env.FIREBASE_APP_ID,
 };
 
-
 const dbOptionsAll = {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -26,12 +25,12 @@ const dbOptionsAll = {
   useUnifiedTopology: true,
 };
 
-
 const dev = {
   port: process.env.PORT || 8080, // app port
   mongodbUri: process.env.MONGODB_URI || 'mongodb://mongo:27017',
   firebaseConfig,
   dbOptions: dbOptionsAll,
+  clientToken: process.env.CLIENT_TOKEN
 };
 
 const prod = {
@@ -39,6 +38,7 @@ const prod = {
   mongodbUri: process.env.MONGODB_URI || mongodbUriProd,
   firebaseConfig,
   dbOptions: dbOptionsAll,
+  clientToken: process.env.CLIENT_TOKEN
 };
 
 const test = {
@@ -46,6 +46,7 @@ const test = {
   mongodbUri: process.env.MONGODB_URI || 'mongodb://mongo_test:27018',
   firebaseConfig,
   dbOptions: dbOptionsAll,
+  clientToken: process.env.CLIENT_TOKEN
 };
 
 const staging = {
