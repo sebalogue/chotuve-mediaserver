@@ -54,6 +54,7 @@ const staging = {
   mongodbUri: process.env.MONGODB_URI || mongodb_uri_staging,
   firebaseConfig: firebaseConfig,
   dbOptions: dbOptionsAll,
+  clientToken: process.env.CLIENT_TOKEN
 };
 
 const config = {
