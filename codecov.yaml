@@ -6,4 +6,4 @@ coverage:
     patch: off
 ignore:
   - "doc/**/*"
-  - "app/services/**/*"
+  - "services/logger.js"
