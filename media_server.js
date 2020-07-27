@@ -14,7 +14,7 @@ app.use(express.json({
         JSON.parse(buf);
       }
     } catch(e) {
-      res.status(400).send('Invalid JSON');
+      res.status(400).json({'message': 'Invalid JSON'});
       res.end();
       return;
     }
@@ -23,11 +23,11 @@ app.use(express.json({
 
 app.use(function (req, res, next) {
     if (!req.get('x-client-token')) {
-      res.status(400).send('Client token missing!');
+      res.status(400).json({'message': 'Client token missing!'});
       return;
     }
     if (req.get('x-client-token') != clientToken) {
-      res.status(400).send('Invalid client token!');
+      res.status(400).json({'message': 'Invalid client token!'});
       return;
     }
     next();
