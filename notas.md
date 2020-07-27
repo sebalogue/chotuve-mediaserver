@@ -1,7 +1,7 @@
 
 # Development: Docker-compose
 
-`docker-compose up --build`
+`NODE_ENV=dev docker-compose up --build`
 
 # Test: Docker-compose
 
