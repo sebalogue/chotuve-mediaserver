@@ -44,7 +44,7 @@ class VideosController {
         Logger.logInfo('Video added successfully');
       })
       .catch((error) => {
-        this.catchError(error, res);
+        VideosController.catchError(error, res);
       });
   }
 
@@ -54,7 +54,7 @@ class VideosController {
     try {
       timeStamp = await videos.getTimeCreated(videoId); // ver errores
     } catch (error) {
-      this.catchError(error, res);
+      VideosController.catchError(error, res);
       return;
     }
     videos.getUrl(videoId)
@@ -67,7 +67,7 @@ class VideosController {
         Logger.logInfo('Video getted successfully');
       })
       .catch((error) => {
-        this.catchError(error, res);
+        VideosController.catchError(error, res);
       });
   }
 
@@ -79,7 +79,7 @@ class VideosController {
         Logger.logInfo('Video deleted successfully');
       })
       .catch((error) => {
-        this.catchError(error, res);
+        VideosController.catchError(error, res);
       });
   }
 
@@ -95,7 +95,7 @@ class VideosController {
         Logger.logInfo('Video updated successfully');
       })
       .catch((error) => {
-        this.catchError(error, res);
+        VideosController.catchError(error, res);
       });
   }
 }

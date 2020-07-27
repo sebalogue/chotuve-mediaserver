@@ -4,7 +4,7 @@ const { check, validationResult } = require('express-validator');
 const Logger = require('./services/logger');
 
 const app = express();
-const { port } = require('./config');
+const { port, clientToken } = require('./config');
 
 //app.use(express.json()) // for parsing application/json
 app.use(express.json({
@@ -16,6 +16,19 @@ app.use(express.json({
     }
   }
 }));
+
+app.use(function (req, res, next) {
+    if (!req.get('x-client-token')) {
+      res.status(400).send('Client token missing!');
+      return;
+    }
+    if (req.get('x-client-token') != clientToken) {
+      res.status(400).send('Invalid client token!');
+      return;
+    }
+    next();
+  }
+);
 
 app.get('/', function(req, res) {
   res.send('HelloWorld!');
@@ -98,4 +111,3 @@ app.put('/video', [
 app.listen(port, function() {
   Logger.logInfo(`Example app listening at: http://localhost:${port}`);
 });
-
