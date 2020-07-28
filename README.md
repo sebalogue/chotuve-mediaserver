@@ -21,7 +21,7 @@
 
 ## API
 
- - **Add video:** `POST http://localhost:8080/video` con body:
+ - **Add video:** `POST http://localhost:8080/videos` con body:
  ```
 {
   "videoId": "123",
@@ -38,12 +38,8 @@ Respuesta exitosa:
 }
  ```
 
- - **Get video:** `GET http://localhost:8080/video` con body:
- ```
-{
-  "videoId": "123",
-}
- ```
+ - **Get video:** `GET http://localhost:8080/videos/:id`.
+
 
  Respuesta exitosa:
   ```
@@ -54,7 +50,7 @@ Respuesta exitosa:
 }
  ```
 
- - **Delete a video:** `DELETE http://localhost:8080/video` con body:
+ - **Delete a video:** `DELETE http://localhost:8080/videos/:id` con body:
  ```
 {
   "videoId": "123",

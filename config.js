@@ -1,9 +1,11 @@
 // config.js
 require('dotenv').config();
 
-const env = process.env.NODE_ENV; // 'dev', 'test' or 'prod'
-
 const mongodbUriProd = process.env.MONGODB_URI;
+const env = process.env.NODE_ENV // 'dev', 'test', 'prod' or 'staging'
+
+const mongodb_uri_prod = process.env.MONGODB_URI;
+const mongodb_uri_staging = process.env.MONGODB_STAGING_URI;
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -15,7 +17,6 @@ const firebaseConfig = {
   appId: process.env.FIREBASE_APP_ID,
 };
 
-
 const dbOptionsAll = {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -24,12 +25,12 @@ const dbOptionsAll = {
   useUnifiedTopology: true,
 };
 
-
 const dev = {
   port: process.env.PORT || 8080, // app port
   mongodbUri: process.env.MONGODB_URI || 'mongodb://mongo:27017',
   firebaseConfig,
   dbOptions: dbOptionsAll,
+  clientToken: process.env.CLIENT_TOKEN
 };
 
 const prod = {
@@ -37,6 +38,7 @@ const prod = {
   mongodbUri: process.env.MONGODB_URI || mongodbUriProd,
   firebaseConfig,
   dbOptions: dbOptionsAll,
+  clientToken: process.env.CLIENT_TOKEN
 };
 
 const test = {
@@ -44,12 +46,22 @@ const test = {
   mongodbUri: process.env.MONGODB_URI || 'mongodb://mongo_test:27018',
   firebaseConfig,
   dbOptions: dbOptionsAll,
+  clientToken: process.env.CLIENT_TOKEN
+};
+
+const staging = {
+  port: process.env.PORT || 8080,
+  mongodbUri: process.env.MONGODB_URI || mongodb_uri_staging,
+  firebaseConfig: firebaseConfig,
+  dbOptions: dbOptionsAll,
+  clientToken: process.env.CLIENT_TOKEN
 };
 
 const config = {
   dev,
   test,
   prod,
+  staging
 };
 
 module.exports = config[env];
