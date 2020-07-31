@@ -1,0 +1,134 @@
+swagger: "2.0"
+
+info:
+  version: 1.0.0
+  title: "API para chotuve-media-server"
+  description: "Media Server"
+
+schemes: 
+  - "https"
+host: "chotuve-media-server.herokuapp.com"
+tags:
+- name: "video"
+  description: "Recurso Video"
+paths:
+  /videos:
+    post:
+      tags:
+      - video
+      summary: "Agregar un nuevo video"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Info del video"
+        required: true
+        schema:
+          $ref: "#/definitions/Video"
+      - in: "header"
+        name: "x-client-token"
+        type: "string"
+      responses:
+        "201":
+          description: "Video agregado"
+        "404":
+          description: "Video not found in Firebase/Database"
+        "400":
+          description: "Invalid input"
+        "401":
+          description: "Unauthorized (Invalid or missing token)"
+        "500":
+          description: "Internal Server Error"
+    put:
+      tags:
+      - video
+      summary: "Editar url de un video"
+      description: ""
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Info del video"
+        required: true
+        schema:
+          $ref: "#/definitions/Video"
+      - in: "header"
+        name: "x-client-token"
+        type: "string"
+      responses:
+        "201":
+          description: "Video agregado"
+        "404":
+          description: "Video not found in Firebase/Database"
+        "400":
+          description: "Invalid input"
+        "401":
+          description: "Unauthorized (Invalid or missing token)"
+        "500":
+          description: "Internal Server Error"
+  /videos/{videoId}:
+    get:
+      tags:
+      - video
+      summary: "Obtener video a partir de Id"
+      description: "Devuelve informacion de un video"
+      parameters:
+      - name: "videoId"
+        in: "path"
+        description: "Id del video"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "header"
+        name: "x-client-token"
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+        "404":
+          description: "Video not found"
+        "400":
+          description: "Invalid input"
+        "401":
+          description: "Unauthorized (Invalid or missing token)"
+        "500":
+          description: "Internal Server Error"
+    delete:
+      tags:
+      - video
+      summary: "Obtener video a partir de Id"
+      description: "Devuelve informacion de un video"
+      parameters:
+      - name: "videoId"
+        in: "path"
+        description: "Id del video"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "header"
+        name: "x-client-token"
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+        "404":
+          description: "Video not found"
+        "400":
+          description: "Invalid input"
+        "401":
+          description: "Unauthorized (Invalid or missing token)"
+        "500":
+          description: "Internal Server Error"
+definitions:
+  Video:
+    type: "object"
+    required:
+    - "videoId"
+    - "url"
+    properties:
+      videoId:
+        type: "integer"
+      url:
+        type: "string"

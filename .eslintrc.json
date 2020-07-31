@@ -5,7 +5,7 @@
     "node": true
   },
   "extends": [
-      "airbnb-base"
+      "eslint:recommended"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -22,5 +22,16 @@
         "paths": ["./db"]
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.js",
+        "**/*.test.jsx"
+      ],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
 }

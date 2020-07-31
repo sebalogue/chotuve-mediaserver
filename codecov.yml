@@ -4,6 +4,6 @@ coverage:
   precision: 2
   status:
     patch: off
-ignore:
-  - "doc/**/*"
-  - "services/logger.js"
+  ignore:
+    - "doc/**/*"
+    - "services/logger.js"
